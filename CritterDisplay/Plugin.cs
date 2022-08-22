@@ -18,7 +18,6 @@ namespace CritterDisplay
         private ConfigEntry<KeyCode> _configKey;
         private ConfigEntry<BookType> _bookType;
 
-        //internal bool Enabled = false;
         internal BookType BookType = BookType.None;
 
         internal void Awake()

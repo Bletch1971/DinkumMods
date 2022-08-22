@@ -27,8 +27,5 @@
     <Reference Include="Mirror">
       <HintPath>E:\Program Files\Steam\steamapps\common\Dinkum\Dinkum_Data\Managed\Mirror.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>E:\Program Files\Steam\steamapps\common\Dinkum\Dinkum_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
