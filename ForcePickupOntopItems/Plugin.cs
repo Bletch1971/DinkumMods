@@ -41,7 +41,7 @@ namespace ForcePickupOntopItems
             if (Input.GetKeyDown(_configKey.Value))
             {
                 Enabled = !Enabled;
-                NotificationManager.manage.createChatNotification("Force pickup of ontop items is now " + (Enabled ? "enabled" : "disabled") + ".", false);
+                NotificationManager.manage.createChatNotification($"Force pickup of ontop items is now {(Enabled ? "enabled" : "disabled")}.", false);
             }
         }
     }
