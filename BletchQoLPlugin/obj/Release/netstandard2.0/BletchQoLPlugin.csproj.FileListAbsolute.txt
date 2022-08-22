@@ -1,0 +1,11 @@
+D:\GitHub\BletchQoLPlugin\bin\Release\netstandard2.0\bletch.dinkum.qolchanges.deps.json
+D:\GitHub\BletchQoLPlugin\bin\Release\netstandard2.0\bletch.dinkum.qolchanges.dll
+D:\GitHub\BletchQoLPlugin\bin\Release\netstandard2.0\bletch.dinkum.qolchanges.pdb
+D:\GitHub\BletchQoLPlugin\obj\Release\netstandard2.0\BletchQoLPlugin.csproj.AssemblyReference.cache
+D:\GitHub\BletchQoLPlugin\obj\Release\netstandard2.0\PluginInfo.cs
+D:\GitHub\BletchQoLPlugin\obj\Release\netstandard2.0\BletchQoLPlugin.GeneratedMSBuildEditorConfig.editorconfig
+D:\GitHub\BletchQoLPlugin\obj\Release\netstandard2.0\BletchQoLPlugin.AssemblyInfoInputs.cache
+D:\GitHub\BletchQoLPlugin\obj\Release\netstandard2.0\BletchQoLPlugin.AssemblyInfo.cs
+D:\GitHub\BletchQoLPlugin\obj\Release\netstandard2.0\BletchQoLPlugin.csproj.CoreCompileInputs.cache
+D:\GitHub\BletchQoLPlugin\obj\Release\netstandard2.0\bletch.dinkum.qolchanges.dll
+D:\GitHub\BletchQoLPlugin\obj\Release\netstandard2.0\bletch.dinkum.qolchanges.pdb
