@@ -29,7 +29,7 @@ namespace CritterDisplay
 
             BookType = _bookType.Value;
 
-            _harmony.PatchAll();
+            _harmony.PatchAll(typeof(CritterDisplayPatches));
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
