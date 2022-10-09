@@ -2,10 +2,10 @@
 
 namespace ForcePickupOntopItems
 {
-    [HarmonyPatch(typeof(CharInteract), "pickUpTileObject")]
-    internal class CharInteractPatch
+    internal class ForcePickupOntopItemsPatches
     {
         [HarmonyPostfix]
+        [HarmonyPatch(typeof(CharInteract), "pickUpTileObject")]
         private static void pickUpTileObjectPatch(ref CharInteract __instance)
         {
             if (!Plugin.instance.Enabled)

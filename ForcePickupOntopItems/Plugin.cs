@@ -21,7 +21,8 @@ namespace ForcePickupOntopItems
             instance = this;
 
             _configKey = Config.Bind("General", "Enable Key", KeyCode.F10, "This key will enable/disable the force pickup of ontop items.");
-            _harmony.PatchAll();
+
+            _harmony.PatchAll(typeof(ForcePickupOntopItemsPatches));
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} loaded!");
         }
