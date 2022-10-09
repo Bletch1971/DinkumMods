@@ -15,8 +15,6 @@ namespace AlwaysActiveBooks
         private ConfigEntry<KeyCode> _configKey;
         private ConfigEntry<BookType> _bookType;
 
-        internal BookType BookType = BookType.Manual;
-
         internal void Awake()
         {
             instance = this;
@@ -24,9 +22,12 @@ namespace AlwaysActiveBooks
             _configKey = Config.Bind("General", "Enable Key", KeyCode.F10, "This key will enable/disable the display of the critter information.");
             _bookType = Config.Bind("General", "Book Type", BookType.Manual, "Which books will be always active.");
 
-            BookType = _bookType.Value;
-
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        }
+
+        internal BookType GetBookType()
+        {
+            return _bookType.Value;
         }
 
         internal static void LogDebug(string message)
@@ -43,32 +44,37 @@ namespace AlwaysActiveBooks
         {
             if (Input.GetKeyDown(_configKey.Value))
             {
-                var newValue = (int)BookType + 1;
-                if (Enum.IsDefined(typeof(BookType), newValue))
-                    BookType = (BookType)Enum.Parse(typeof(BookType), newValue.ToString());
-                else
-                    BookType = BookType.Manual;
+                var newValue = (int)_bookType.Value + 1;
+                if (!Enum.IsDefined(typeof(BookType), newValue))
+                    newValue = 0;
 
-                if (BookType == BookType.Manual)
-                    NotificationManager.manage.createChatNotification($"Bug and Fish books are now set to manual.", false);
-                else if (BookType == BookType.Both)
-                    NotificationManager.manage.createChatNotification($"Bug and Fish books are now set to always active.", false);
-                else
-                    NotificationManager.manage.createChatNotification($"{BookType} book is now set to always active.", false);
-
-                _bookType.Value = BookType;
+                _bookType.Value = (BookType)Enum.Parse(typeof(BookType), newValue.ToString());
                 Config.Save();
 
-                var openBugBook = BookType is BookType.Bug or BookType.Both && Inventory.inv.invSlots.Any(s => s.itemNo == 679);
-                var openFishBook = BookType is BookType.Fish or BookType.Both && Inventory.inv.invSlots.Any(s => s.itemNo == 680);
+                switch (_bookType.Value)
+                {
+                    case BookType.Manual:
+                        NotificationManager.manage.createChatNotification($"Bug and Fish books are now set to manual.", false);
+                        break;
+                    case BookType.Both:
+                        NotificationManager.manage.createChatNotification($"Bug and Fish books are now set to always active.", false);
+                        break;
+                    default:
+                        NotificationManager.manage.createChatNotification($"{_bookType.Value} book is now set to always active.", false);
+                        break;
+                }
+
+
+                var openBugBook = _bookType.Value is BookType.Bug or BookType.Both && Inventory.inv.invSlots.Any(s => s.itemNo == 679);
+                var openFishBook = _bookType.Value is BookType.Fish or BookType.Both && Inventory.inv.invSlots.Any(s => s.itemNo == 680);
 
                 AnimalManager.manage.bugBookOpen = openBugBook;
                 AnimalManager.manage.fishBookOpen = openFishBook;
             }
             else
             {
-                var openBugBook = BookType is BookType.Bug or BookType.Both && Inventory.inv.invSlots.Any(s => s.itemNo == 679);
-                var openFishBook = BookType is BookType.Fish or BookType.Both && Inventory.inv.invSlots.Any(s => s.itemNo == 680);
+                var openBugBook = _bookType.Value is BookType.Bug or BookType.Both && Inventory.inv.invSlots.Any(s => s.itemNo == 679);
+                var openFishBook = _bookType.Value is BookType.Fish or BookType.Both && Inventory.inv.invSlots.Any(s => s.itemNo == 680);
 
                 AnimalManager.manage.bugBookOpen |= openBugBook;
                 AnimalManager.manage.fishBookOpen |= openFishBook;
