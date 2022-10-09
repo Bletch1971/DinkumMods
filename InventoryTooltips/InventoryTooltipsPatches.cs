@@ -29,7 +29,8 @@ namespace InventoryTooltips
             var itemInSlot = slot.itemInSlot;
             var amount = itemInSlot.value * 2;
 
-            if (Plugin.instance.DisplayType == DisplayType.Stack || Plugin.instance.DisplayType == DisplayType.StackWithLicence)
+            var displayType = Plugin.instance.GetDisplayType();
+            if (displayType == DisplayType.Stack || displayType == DisplayType.StackWithLicence)
             {
                 amount *= slot.stack;
             }
@@ -42,14 +43,15 @@ namespace InventoryTooltips
             var itemInSlot = slot.itemInSlot;
             var amount = (float)itemInSlot.value;
 
-            if (Plugin.instance.DisplayType == DisplayType.ItemWithLicence || Plugin.instance.DisplayType == DisplayType.StackWithLicence)
+            var displayType = Plugin.instance.GetDisplayType();
+            if (displayType == DisplayType.ItemWithLicence || displayType == DisplayType.StackWithLicence)
             {
                 var level = (float)LicenceManager.manage.allLicences[8].getCurrentLevel();
                 var percentage = 1 + ((float)level * 0.05f);
                 amount = Mathf.RoundToInt(amount * percentage);
             }
 
-            if (Plugin.instance.DisplayType == DisplayType.Stack || Plugin.instance.DisplayType == DisplayType.StackWithLicence)
+            if (displayType == DisplayType.Stack || displayType == DisplayType.StackWithLicence)
             {
                 amount *= slot.stack;
             }

@@ -23,8 +23,6 @@ namespace InventoryTooltips
         private ConfigEntry<KeyCode> _hotKey;
         private ConfigEntry<DisplayType> _displayType;
 
-        internal DisplayType DisplayType = DisplayType.Item;
-
         internal void Awake()
         {
             instance = this;
@@ -45,6 +43,11 @@ namespace InventoryTooltips
             return _enabled.Value;
         }
 
+        internal DisplayType GetDisplayType()
+        {
+            return _displayType.Value;
+        }
+
         internal static void LogDebug(string message)
         {
             instance.Logger.LogDebug(message);
@@ -63,22 +66,20 @@ namespace InventoryTooltips
                 Config.Save();
 
                 if (_enabled.Value)
-                    NotificationManager.manage.createChatNotification($"Tooltip information is now enabled and showing prices for the {GetDisplayTypeDescription(DisplayType)}.", false);
+                    NotificationManager.manage.createChatNotification($"Tooltip information is now enabled and showing prices for the {GetDisplayTypeDescription(_displayType.Value)}.", false);
                 else
                     NotificationManager.manage.createChatNotification($"Tooltip information is now disabled.", false);
             }
 
             if (Input.GetKeyDown(_hotKey.Value) && Inventory.inv.invOpen && _enabled.Value)
             {
-                var newValue = (int)DisplayType + 1;
+                var newValue = (int)_displayType.Value + 1;
                 if (!Enum.IsDefined(typeof(DisplayType), newValue))
                     newValue = 0;
-                DisplayType = (DisplayType)Enum.Parse(typeof(DisplayType), newValue.ToString());
-
-                _displayType.Value = DisplayType;
+                _displayType.Value = (DisplayType)Enum.Parse(typeof(DisplayType), newValue.ToString());
                 Config.Save();
 
-                NotificationManager.manage.createChatNotification($"Tooltip information is showing prices for the {GetDisplayTypeDescription(DisplayType)}.", false);
+                NotificationManager.manage.createChatNotification($"Tooltip information is showing prices for the {GetDisplayTypeDescription(_displayType.Value)}.", false);
             }
         }
 
