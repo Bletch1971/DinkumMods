@@ -20,8 +20,11 @@ namespace InventoryTooltips
 
         private ConfigEntry<KeyCode> _configKey;
         private ConfigEntry<bool> _enabled;
-        private ConfigEntry<KeyCode> _hotKey;
+        private ConfigEntry<KeyCode> _stackHotKey;
+        private ConfigEntry<KeyCode> _displayHotKey;
         private ConfigEntry<DisplayType> _displayType;
+
+        private bool _showStackPrice = false;
 
         internal void Awake()
         {
@@ -29,8 +32,9 @@ namespace InventoryTooltips
 
             _configKey = Config.Bind("General", "Enable Key", KeyCode.F10, "This key will enable/disable the display of the tooltip information. Disable with KeyCode.None.");
             _enabled = Config.Bind("General", "Enabled", true, "Tooltip information enabled.");
-            _hotKey = Config.Bind("General", "HotKey", KeyCode.LeftControl, "The key that will toggle display of stack price. Disable with KeyCode.None.");
-            _displayType = Config.Bind("General", "Display Type", DisplayType.Item, "How the price information will be calculated in the tooltip.");
+            _displayHotKey = Config.Bind("General", "Display Type HotKey", KeyCode.L, "The key that will toggle if the price will include the Commerce Licence Level adjustment. Disable with KeyCode.None.");
+            _displayType = Config.Bind("General", "Display Type", DisplayType.WithoutLicence, "If the price will include the Commerce Licence Level adjustment.");
+            _stackHotKey = Config.Bind("General", "Show Stack Price HotKey", KeyCode.LeftControl, "The key that will toggle display of stack price. Disable with KeyCode.None.");
 
             _harmony.PatchAll(typeof(InventoryTooltipsPatches));
 
@@ -41,6 +45,11 @@ namespace InventoryTooltips
         internal bool GetEnabled()
         {
             return _enabled.Value;
+        }
+
+        internal bool GetShowStackPrice()
+        {
+            return _showStackPrice;
         }
 
         internal DisplayType GetDisplayType()
@@ -66,12 +75,12 @@ namespace InventoryTooltips
                 Config.Save();
 
                 if (_enabled.Value)
-                    NotificationManager.manage.createChatNotification($"Tooltip information is now enabled and showing prices for the {GetDisplayTypeDescription(_displayType.Value)}.", false);
+                    NotificationManager.manage.createChatNotification($"Tooltip information is now enabled and showing prices {GetDisplayTypeDescription(_displayType.Value)}.", false);
                 else
                     NotificationManager.manage.createChatNotification($"Tooltip information is now disabled.", false);
             }
 
-            if (Input.GetKeyDown(_hotKey.Value) && Inventory.inv.invOpen && _enabled.Value)
+            if (Input.GetKeyDown(_displayHotKey.Value))
             {
                 var newValue = (int)_displayType.Value + 1;
                 if (!Enum.IsDefined(typeof(DisplayType), newValue))
@@ -79,7 +88,16 @@ namespace InventoryTooltips
                 _displayType.Value = (DisplayType)Enum.Parse(typeof(DisplayType), newValue.ToString());
                 Config.Save();
 
-                NotificationManager.manage.createChatNotification($"Tooltip information is showing prices for the {GetDisplayTypeDescription(_displayType.Value)}.", false);
+                NotificationManager.manage.createChatNotification($"Tooltip information is showing prices {GetDisplayTypeDescription(_displayType.Value)}.", false);
+            }
+
+            if (Input.GetKeyDown(_stackHotKey.Value) && Inventory.inv.invOpen && _enabled.Value)
+            {
+                _showStackPrice = true;
+            }
+            if (Input.GetKeyUp(_stackHotKey.Value))
+            {
+                _showStackPrice = false;
             }
         }
 

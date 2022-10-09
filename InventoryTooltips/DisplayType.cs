@@ -4,13 +4,9 @@ namespace InventoryTooltips
 {
     internal enum DisplayType
     {
-        [Description("Item")]
-        Item = 0,
-        [Description("Stack")]
-        Stack = 1,
-        [Description("Item with Commerce Licence Level")]
-        ItemWithLicence = 2,
-        [Description("Stack with Commerce Licence Level")]
-        StackWithLicence = 3,
+        [Description("without Commerce Licence Level adjustment")]
+        WithoutLicence = 0,
+        [Description("with Commerce Licence Level adjustment")]
+        WithLicence,
     }
 }
