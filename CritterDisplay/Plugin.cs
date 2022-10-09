@@ -15,6 +15,7 @@ namespace CritterDisplay
         internal static List<AnimalAI> animalAIs = new List<AnimalAI>();
 
         private readonly Harmony _harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+
         private ConfigEntry<KeyCode> _configKey;
         private ConfigEntry<BookType> _bookType;
 
@@ -102,6 +103,7 @@ namespace CritterDisplay
                 var newValue = (int)_bookType.Value + 1;
                 if (!Enum.IsDefined(typeof(BookType), newValue))
                     newValue = 0;
+
                 _bookType.Value = (BookType)Enum.Parse(typeof(BookType), newValue.ToString());
                 Config.Save();
 
