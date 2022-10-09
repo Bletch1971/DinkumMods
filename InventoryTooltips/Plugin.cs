@@ -19,8 +19,8 @@ namespace InventoryTooltips
         private readonly Harmony _harmony = new(PluginInfo.PLUGIN_GUID);
 
         private ConfigEntry<KeyCode> _configKey;
-        internal ConfigEntry<bool> _enabled;
-        internal ConfigEntry<KeyCode> _hotKey;
+        private ConfigEntry<bool> _enabled;
+        private ConfigEntry<KeyCode> _hotKey;
         private ConfigEntry<DisplayType> _displayType;
 
         internal DisplayType DisplayType = DisplayType.Item;
@@ -38,6 +38,11 @@ namespace InventoryTooltips
 
             // Plugin startup logic
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        }
+
+        internal bool GetEnabled()
+        {
+            return _enabled.Value;
         }
 
         internal static void LogDebug(string message)

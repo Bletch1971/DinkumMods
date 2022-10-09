@@ -9,22 +9,22 @@ namespace InventoryTooltips
         [HarmonyPostfix]
         private static void fillHoverDescriptionPatch(ref Inventory __instance, InventorySlot rollOverSlot)
         {
-            if (!Plugin.instance._enabled.Value)
+            if (!Plugin.instance.GetEnabled())
                 return;
 
-            InventoryItem itemInSlot = rollOverSlot.itemInSlot;
+            var itemInSlot = rollOverSlot.itemInSlot;
             var itemTooltip = Plugin.AlreadyPatched
                 ? __instance.InvDescriptionText.text
                 : itemInSlot.getItemDescription(__instance.getInvItemId(itemInSlot));
 
-            itemTooltip += GetBuyPrice(__instance, rollOverSlot);
-            itemTooltip += GetSellPrice(__instance, rollOverSlot);
-            itemTooltip += GetMuseumDonated(__instance, rollOverSlot);
+            itemTooltip += GetBuyPrice(rollOverSlot);
+            itemTooltip += GetSellPrice(rollOverSlot);
+            itemTooltip += GetMuseumDonated(rollOverSlot);
 
             __instance.InvDescriptionText.text = itemTooltip;
         }
 
-        private static string GetBuyPrice(Inventory inventory, InventorySlot slot)
+        private static string GetBuyPrice(InventorySlot slot)
         {
             var itemInSlot = slot.itemInSlot;
             var amount = itemInSlot.value * 2;
@@ -37,7 +37,7 @@ namespace InventoryTooltips
             return UIAnimationManager.manage.moneyAmountColorTag($"\n[Buy] <sprite=11>{amount:n0}");
         }
 
-        private static string GetSellPrice(Inventory inventory, InventorySlot slot)
+        private static string GetSellPrice(InventorySlot slot)
         {
             var itemInSlot = slot.itemInSlot;
             var amount = (float)itemInSlot.value;
@@ -57,7 +57,7 @@ namespace InventoryTooltips
             return UIAnimationManager.manage.moneyAmountColorTag($"\n[Sell] <sprite=11>{amount:n0}");
         }
 
-        private static string GetMuseumDonated(Inventory inventory, InventorySlot slot)
+        private static string GetMuseumDonated(InventorySlot slot)
         {
             var itemInSlot = slot.itemInSlot;
 
