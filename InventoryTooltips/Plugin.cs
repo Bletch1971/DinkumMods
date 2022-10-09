@@ -5,7 +5,6 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
-using static MonoMod.RuntimeDetour.DynamicHookGen;
 
 namespace InventoryTooltips
 {
