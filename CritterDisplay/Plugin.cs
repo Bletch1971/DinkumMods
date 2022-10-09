@@ -18,8 +18,6 @@ namespace CritterDisplay
         private ConfigEntry<KeyCode> _configKey;
         private ConfigEntry<BookType> _bookType;
 
-        internal BookType BookType = BookType.None;
-
         internal void Awake()
         {
             instance = this;
@@ -27,11 +25,14 @@ namespace CritterDisplay
             _configKey = Config.Bind("General", "Enable Key", KeyCode.F10, "This key will enable/disable the display of the critter information.");
             _bookType = Config.Bind("General", "Book Type", BookType.None, "Which book will show the critter information when opened.");
 
-            BookType = _bookType.Value;
-
             _harmony.PatchAll(typeof(CritterDisplayPatches));
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        }
+
+        internal BookType GetBookType()
+        {
+            return _bookType.Value;
         }
 
         internal static void LogDebug(string message)
@@ -46,7 +47,7 @@ namespace CritterDisplay
 
         internal void OnGUI()
         {
-            if (BookType == BookType.None)
+            if (_bookType.Value == BookType.None)
                 return;
 
             if (!NetworkMapSharer.share.localChar)
@@ -54,7 +55,7 @@ namespace CritterDisplay
                 animalAIs.Clear();
             }
 
-            bool bookOpen = BookType == BookType.Fish ? AnimalManager.manage.fishBookOpen : AnimalManager.manage.bugBookOpen;
+            bool bookOpen = _bookType.Value == BookType.Fish ? AnimalManager.manage.fishBookOpen : AnimalManager.manage.bugBookOpen;
             bool showInformation = !(Inventory.inv.isMenuOpen() || !NetworkMapSharer.share.localChar || !bookOpen || animalAIs.Count <= 0);
             if (showInformation)
             {
@@ -98,19 +99,16 @@ namespace CritterDisplay
         {
             if (Input.GetKeyDown(_configKey.Value))
             {
-                var newValue = (int)BookType + 1;
-                if (Enum.IsDefined(typeof(BookType), newValue))
-                    BookType = (BookType)Enum.Parse(typeof(BookType), newValue.ToString());
-                else
-                    BookType = BookType.None;
+                var newValue = (int)_bookType.Value + 1;
+                if (!Enum.IsDefined(typeof(BookType), newValue))
+                    newValue = 0;
+                _bookType.Value = (BookType)Enum.Parse(typeof(BookType), newValue.ToString());
+                Config.Save();
 
-                if (BookType == BookType.None)
+                if (_bookType.Value == BookType.None)
                     NotificationManager.manage.createChatNotification($"Critter information is now disabled.", false);
                 else
-                    NotificationManager.manage.createChatNotification($"Critter information is shown when {BookType} book is open.", false);
-
-                _bookType.Value = BookType;
-                Config.Save();
+                    NotificationManager.manage.createChatNotification($"Critter information is shown when {_bookType.Value} book is open.", false);
             }
         }
     }

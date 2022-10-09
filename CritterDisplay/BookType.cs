@@ -2,7 +2,7 @@
 {
     internal enum BookType
     {
-        None,
+        None = 0,
         Bug,
         Fish,
     }
