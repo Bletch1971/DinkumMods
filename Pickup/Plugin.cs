@@ -92,7 +92,7 @@ namespace Pickup
                 _autoPickup.Value = !_autoPickup.Value;
                 Config.Save();
 
-                NotificationManager.manage.createChatNotification($"Auto-Pickup is now {(_locked.Value ? "enabled" : "disabled")}.", false);
+                NotificationManager.manage.createChatNotification($"Auto-Pickup is now {(_autoPickup.Value ? "enabled" : "disabled")}.", false);
             }
 
             if (_autoPickup.Value)
